@@ -95,3 +95,6 @@ qemu.hw.mainkeys=0
 
 #Debug
 persist.logd.logpersistd=logcatd
+
+#sdcard
+ro.crypto.fuse_sdcard=true
