@@ -178,6 +178,10 @@ on init
     chown system /sys/class/misc/m_mag_misc/magdelay
     chown system /sys/class/misc/m_mag_misc/magoactive
     chown system /sys/class/misc/m_mag_misc/magodelay
+    
+    # HRSensor
+    chmod 0777 /dev/pixart_ofn
+    chown system system /dev/pixart_ofn
 
     # Charge
     chmod 0666 /dev/MT_pmic_adc_cali
