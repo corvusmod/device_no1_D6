@@ -1,0 +1,71 @@
+commit df2ebdab956ce224a45ac5ac8651724b22fe0d10
+Author: Luis Cuervo <lcuervo@blackphone.ch>
+Date:   Fri Oct 14 16:22:46 2016 +0200
+
+    Modified power button behaviour. 2 presses = back, 3 presses = menu
+    
+    Change-Id: I1eb274f2cc42b30041b2a81340cb63b0ba2c2b4d
+
+diff --git a/core/res/res/values/config.xml b/core/res/res/values/config.xml
+index 77273b0..607afbb 100755
+--- a/core/res/res/values/config.xml
++++ b/core/res/res/values/config.xml
+@@ -680,14 +680,14 @@
+             1 - Toggle theater mode setting
+             2 - Brightness boost
+     -->
+-    <integer name="config_doublePressOnPowerBehavior">0</integer>
++    <integer name="config_doublePressOnPowerBehavior">3</integer>
+ 
+     <!-- Control the behavior when the user triple presses the power button.
+             0 - Nothing
+             1 - Toggle theater mode setting
+             2 - Brightness boost
+     -->
+-    <integer name="config_triplePressOnPowerBehavior">0</integer>
++    <integer name="config_triplePressOnPowerBehavior">4</integer>
+ 
+     <!-- Package name for default keyguard appwidget [DO NOT TRANSLATE] -->
+     <string name="widget_default_package_name"></string>
+diff --git a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+index f946bd3..8298b18 100644
+--- a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
++++ b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+@@ -181,6 +181,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+     static final int MULTI_PRESS_POWER_NOTHING = 0;
+     static final int MULTI_PRESS_POWER_THEATER_MODE = 1;
+     static final int MULTI_PRESS_POWER_BRIGHTNESS_BOOST = 2;
++    static final int MULTI_PRESS_POWER_BACK = 3;
++    static final int MULTI_PRESS_POWER_MENU = 4;
+ 
+     // These need to match the documentation/constant in
+     // core/res/res/values/config.xml
+@@ -1228,6 +1230,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+                 case SHORT_PRESS_POWER_GO_TO_SLEEP:
+                     mPowerManager.goToSleep(eventTime,
+                             PowerManager.GO_TO_SLEEP_REASON_POWER_BUTTON, 0);
++                    launchHomeFromHotKey();
+                     break;
+                 case SHORT_PRESS_POWER_REALLY_GO_TO_SLEEP:
+                     mPowerManager.goToSleep(eventTime,
+@@ -1274,6 +1277,20 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+                 }
+                 mPowerManager.boostScreenBrightness(eventTime);
+                 break;
++           case MULTI_PRESS_POWER_BACK:
++                Slog.i(TAG, "Sending back key.");
++                if (!interactive) {
++                    wakeUpFromPowerKey(eventTime);
++                }
++                triggerVirtualKeypress(KeyEvent.KEYCODE_BACK);
++                break;
++           case MULTI_PRESS_POWER_MENU:
++                Slog.i(TAG, "Sending menu key.");
++                if (!interactive) {
++                    wakeUpFromPowerKey(eventTime);
++                }
++                triggerVirtualKeypress(KeyEvent.KEYCODE_MENU);
++                break;
+         }
+     }
+ 
