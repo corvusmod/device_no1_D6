@@ -1,0 +1,12 @@
+diff --git a/AndroidManifest.xml b/AndroidManifest.xml
+index 2197a97..af49aac 100644
+--- a/AndroidManifest.xml
++++ b/AndroidManifest.xml
+@@ -11,7 +11,6 @@
+                   android:label="@string/speechrecorderlabel">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN"/>
+-                <category android:name="android.intent.category.LAUNCHER"/>
+             </intent-filter>
+         </activity>
+ 

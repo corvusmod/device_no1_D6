@@ -1,0 +1,12 @@
+diff --git a/target/product/core.mk b/target/product/core.mk
+index a871780..55082aa 100644
+--- a/target/product/core.mk
++++ b/target/product/core.mk
+@@ -23,7 +23,6 @@
+ PRODUCT_PACKAGES += \
+     BasicDreams \
+     Browser \
+-    Calculator \
+     Calendar \
+     CalendarProvider \
+     CaptivePortalLogin \

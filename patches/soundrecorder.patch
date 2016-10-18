@@ -1,0 +1,12 @@
+diff --git a/AndroidManifest.xml b/AndroidManifest.xml
+index 2905c5f..7789ac8 100644
+--- a/AndroidManifest.xml
++++ b/AndroidManifest.xml
+@@ -35,7 +35,6 @@
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+                 <category android:name="android.intent.category.DEFAULT" />
+-                <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+             <intent-filter>
+                  <action android:name="android.intent.action.GET_CONTENT" />

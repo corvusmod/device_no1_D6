@@ -8,7 +8,7 @@ PRODUCT_DEX_PREOPT_DEFAULT_FLAGS := --compiler-filter=interpret-only
 $(call add-product-dex-preopt-module-config,services,--compiler-filter=space)
 
 $(call inherit-product-if-exists, vendor/hexxa/atenea/atenea-vendor.mk)
-$(call inherit-product-if-exists, vendor/google/products/gms.mk)
+#$(call inherit-product-if-exists, vendor/google/products/gms.mk)
 
 LOCAL_PATH := device/hexxa/atenea
 
@@ -123,7 +123,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
 	ro.mediatek.version.release=ALPS.W10.24.p0 \
 	ro.mediatek.platform=MT6572 \
 	ro.mediatek.chip_ver=S01 \
-	ro.mediatek.version.branch=KK1.MP1 \
+	ro.mediatek.version.branch=LP1.MP1 \
 	ro.mediatek.version.sdk=2 \
 	ro.telephony.sim.count=2 \
 	ro.allow.mock.location=0 \

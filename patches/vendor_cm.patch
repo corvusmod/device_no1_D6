@@ -1,0 +1,20 @@
+diff --git a/config/common.mk b/config/common.mk
+index 467df2b..44fead2 100644
+--- a/config/common.mk
++++ b/config/common.mk
+@@ -145,15 +145,11 @@ PRODUCT_PACKAGES += \
+ # Custom CM packages
+ PRODUCT_PACKAGES += \
+     Launcher3 \
+-    Trebuchet \
+-    AudioFX \
+-    CMWallpapers \
+     CMFileManager \
+     Eleven \
+     LockClock \
+     CMUpdater \
+     CMHome \
+-    CyanogenSetupWizard \
+     CMSettingsProvider
+ 
+ # CM Platform Library
