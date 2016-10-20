@@ -367,8 +367,8 @@ on post-fs
     chmod 0660 /dev/wmtdetect
     chown system system /dev/wmtdetect
 
-    mkdir /data/nvram 2770 root system
-    chmod 0770 /dev/nvram
+    mkdir /data/nvram 2777 root system
+    chmod 0777 /dev/nvram
 
     chown radio radio /sys/kernel/ccci/boot
 
