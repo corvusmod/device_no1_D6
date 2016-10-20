@@ -112,17 +112,21 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/hexxa/atenea/bluetooth
 BOARD_EGL_CFG := device/hexxa/atenea/configs/egl.cfg
 USE_OPENGL_RENDERER := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
+TARGET_REQUIRES_SYNCHRONOUS_SETSURFACE := true
 
 # Selinux
-BOARD_SEPOLICY_DIRS := \
+#BOARD_SEPOLICY_DIRS := \
        device/hexxa/atenea/sepolicy
 
-BOARD_SEPOLICY_UNION := \
+#BOARD_SEPOLICY_UNION := \
        device.te \
        app.te \
        netd.te \
        system.te \
        file_contexts
+
+# Offline charging
+BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/BOOT/BOOT/boot/boot_mode
 
 # WIFI
 WPA_SUPPLICANT_VERSION := VER_0_8_X
@@ -142,3 +146,13 @@ LCM_HEIGHT=360
 LCM_WIDTH=360
 
 USE_LEGACY_MTK_AV_BLOB=true
+
+# Sepolicy hack for old kernel, our mt6582 & mt6592 version is 26.
+POLICYVERS := 26
+
+# Hack for build
+$(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
+
+# Sensors
+TARGET_NO_SENSOR_PERMISSION_CHECK := true
+
