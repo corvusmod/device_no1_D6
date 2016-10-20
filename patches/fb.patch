@@ -27,10 +27,10 @@ index 77273b0..607afbb 100755
  
      <!-- Package name for default keyguard appwidget [DO NOT TRANSLATE] -->
      <string name="widget_default_package_name"></string>
-diff --git a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+diff --git a/services/core/java/com/android/server/policy/PhoneWindowManager.java b/services/core/java/com/android/server/policy/PhoneWindowManager.java
 index f946bd3..8298b18 100644
---- a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
-+++ b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+--- a/services/core/java/com/android/server/policy/PhoneWindowManager.java
++++ b/services/core/java/com/android/server/policy/PhoneWindowManager.java
 @@ -181,6 +181,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
      static final int MULTI_PRESS_POWER_NOTHING = 0;
      static final int MULTI_PRESS_POWER_THEATER_MODE = 1;
