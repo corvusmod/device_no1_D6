@@ -1,16 +1,36 @@
-commit df2ebdab956ce224a45ac5ac8651724b22fe0d10
-Author: Luis Cuervo <lcuervo@blackphone.ch>
-Date:   Fri Oct 14 16:22:46 2016 +0200
-
-    Modified power button behaviour. 2 presses = back, 3 presses = menu
-    
-    Change-Id: I1eb274f2cc42b30041b2a81340cb63b0ba2c2b4d
-
+diff --cc packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarPolicy.java
+index 96b3d46,1395ff6..0000000
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarPolicy.java
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBarPolicy.java
+@@@ -129,9 -132,9 +132,12 @@@ public class PhoneStatusBarPolicy imple
+              else if (action.equals(TelecomManager.ACTION_CURRENT_TTY_MODE_CHANGED)) {
+                  updateTTY(intent);
+              }
+ +            else if (action.equals(Intent.ACTION_HEADSET_PLUG)) {
+ +                updateHeadset(intent);
+ +            }
++             else if (action.equals(BluetoothHeadset.ACTION_VENDOR_SPECIFIC_HEADSET_EVENT)) {
++                 updateBluetoothBattery(intent);
++             }
+          }
+      };
+  
+@@@ -169,7 -172,9 +175,10 @@@
+          filter.addAction(AudioManager.INTERNAL_RINGER_MODE_CHANGED_ACTION);
+          filter.addAction(TelephonyIntents.ACTION_SIM_STATE_CHANGED);
+          filter.addAction(TelecomManager.ACTION_CURRENT_TTY_MODE_CHANGED);
+ +        filter.addAction(Intent.ACTION_HEADSET_PLUG);
++         filter.addAction(BluetoothHeadset.ACTION_VENDOR_SPECIFIC_HEADSET_EVENT);
++         filter.addCategory(BluetoothHeadset.VENDOR_SPECIFIC_HEADSET_EVENT_COMPANY_ID_CATEGORY
++             + "." + Integer.toString(BluetoothAssignedNumbers.APPLE));
+          mContext.registerReceiver(mIntentReceiver, filter, null, mHandler);
+  
+          // listen for user / profile change.
 diff --git a/core/res/res/values/config.xml b/core/res/res/values/config.xml
-index 77273b0..607afbb 100755
+index 9abc475..b38ecd6 100644
 --- a/core/res/res/values/config.xml
 +++ b/core/res/res/values/config.xml
-@@ -680,14 +680,14 @@
+@@ -791,14 +791,14 @@
              1 - Toggle theater mode setting
              2 - Brightness boost
      -->
@@ -25,13 +45,13 @@ index 77273b0..607afbb 100755
 -    <integer name="config_triplePressOnPowerBehavior">0</integer>
 +    <integer name="config_triplePressOnPowerBehavior">4</integer>
  
-     <!-- Package name for default keyguard appwidget [DO NOT TRANSLATE] -->
-     <string name="widget_default_package_name"></string>
+     <!-- Control the behavior when the user presses the sleep button.
+             0 - Go to sleep (doze)
 diff --git a/services/core/java/com/android/server/policy/PhoneWindowManager.java b/services/core/java/com/android/server/policy/PhoneWindowManager.java
-index f946bd3..8298b18 100644
+index 6339007..a239be3 100644
 --- a/services/core/java/com/android/server/policy/PhoneWindowManager.java
 +++ b/services/core/java/com/android/server/policy/PhoneWindowManager.java
-@@ -181,6 +181,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+@@ -194,6 +194,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
      static final int MULTI_PRESS_POWER_NOTHING = 0;
      static final int MULTI_PRESS_POWER_THEATER_MODE = 1;
      static final int MULTI_PRESS_POWER_BRIGHTNESS_BOOST = 2;
@@ -40,7 +60,7 @@ index f946bd3..8298b18 100644
  
      // These need to match the documentation/constant in
      // core/res/res/values/config.xml
-@@ -1228,6 +1230,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+@@ -1244,6 +1246,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                  case SHORT_PRESS_POWER_GO_TO_SLEEP:
                      mPowerManager.goToSleep(eventTime,
                              PowerManager.GO_TO_SLEEP_REASON_POWER_BUTTON, 0);
@@ -48,7 +68,7 @@ index f946bd3..8298b18 100644
                      break;
                  case SHORT_PRESS_POWER_REALLY_GO_TO_SLEEP:
                      mPowerManager.goToSleep(eventTime,
-@@ -1274,6 +1277,20 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+@@ -1298,6 +1301,20 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                  }
                  mPowerManager.boostScreenBrightness(eventTime);
                  break;
