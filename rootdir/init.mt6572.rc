@@ -96,7 +96,17 @@ on init
     chown system media /dev/uibc
     chmod 0660 /dev/uibc
 
+    #/dev/ttyMT2 for Connectivity BT/FM/GPS usage
+    chmod 0660 /dev/ttyMT2
+    chown system system /dev/ttyMT2
+
+    chmod 0660 /dev/ttyMT1
+    chown system system /dev/ttyMT1
+
     # GPS
+    chmod 0666 /dev/gps
+    chmod 0660 /dev/stpgps
+    chown gps gps /dev/stpgps
     chown gps gps /sys/class/gpsdrv/gps/pwrctl
     chown gps gps /sys/class/gpsdrv/gps/suspend
     chown gps gps /sys/class/gpsdrv/gps/state
@@ -351,12 +361,6 @@ on post-fs
     exec /system/xbin/mknod /dev/stpgps c 191 0
     exec /system/xbin/mknod /dev/stpbt  c 192 0
 
-    # GPS
-    chmod 0666 /dev/gps
-    chown system gps /dev/gps
-    chmod 0660 /dev/stpgps
-    chown gps gps /dev/stpgps
-
     # BT
     chmod 0660 /dev/stpbt
     chown bluetooth radio /dev/stpbt
@@ -560,13 +564,6 @@ service memsicd3416x /system/bin/memsicd3416x
 	 user system
     group system
     class main
-
-service memsicd3416xfhd /system/bin/memsicd3416xfhd
-    disabled
-    user system
-    group system
-    class main
-    oneshot
 
 service akmd8975 /system/bin/akmd8975
     disabled
