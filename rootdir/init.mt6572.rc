@@ -381,13 +381,13 @@ on post-fs
     chmod 0444 /system/etc/ril/oper.lis
     setprop rild.nw.operlist /system/etc/ril/oper.lis
 
-service wmtLoader /system/bin/logwrapper /system/bin/wmt_loader
+service wmtLoader /system/bin/wmt_loader
     user root
     group root
     class main
     oneshot
    
-service conn_launcher /system/bin/logwrapper /system/bin/6620_launcher -p /system/etc/firmware/
+service conn_launcher /system/bin/6620_launcher -p /system/etc/firmware/
     user system
     group system
     class core
@@ -500,17 +500,6 @@ service NvRAMAgent /system/bin/nvram_agent_binder
      user system
      group system nvram
 
-service thermal_manager /system/bin/thermal_manager
-    user root
-    oneshot
-
-service thermal /system/bin/thermal
-    user system
-    group system
-
-service thermald /system/bin/thermald
-    user system
-    group system
 
 service mdlogger /system/bin/mdlogger
     class main
@@ -532,6 +521,19 @@ service emcsmdlogger /system/bin/emcsmdlogger
     group system shell radio sdcard_rw inet sdcard_r media_rw ccci
     disabled
     oneshot
+
+service thermal_manager /system/bin/thermal_manager
+    user root
+    oneshot
+
+service thermal /system/bin/thermal
+    user system
+    group system
+
+service thermald /system/bin/thermald
+    user system
+    group system
+
 
 #
 #sensor service (begin)
@@ -665,11 +667,6 @@ service BGW /system/xbin/BGW
     class main
     oneshot
 
-# Offline charging
-service ipod /system/bin/ipod
-    user root
-    group root
-    class ipo
 # SenHub scripts
     service sensorhub /system/bin/w812a_sensorhub_init.sh
     class main

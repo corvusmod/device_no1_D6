@@ -112,7 +112,6 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/hexxa/atenea/bluetooth
 BOARD_EGL_CFG := device/hexxa/atenea/configs/egl.cfg
 USE_OPENGL_RENDERER := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
-TARGET_REQUIRES_SYNCHRONOUS_SETSURFACE := true
 
 # Selinux
 #BOARD_SEPOLICY_DIRS := \
@@ -124,9 +123,6 @@ TARGET_REQUIRES_SYNCHRONOUS_SETSURFACE := true
        netd.te \
        system.te \
        file_contexts
-
-# Offline charging
-BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/BOOT/BOOT/boot/boot_mode
 
 # WIFI
 WPA_SUPPLICANT_VERSION := VER_0_8_X
@@ -152,7 +148,4 @@ POLICYVERS := 26
 
 # Hack for build
 $(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
-
-# Sensors
-TARGET_NO_SENSOR_PERMISSION_CHECK := true
 

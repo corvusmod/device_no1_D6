@@ -78,7 +78,7 @@ ro.boot.selinux=disable
 # Disable dirty region for Mali
 debug.hwui.render_dirty_regions=false
 
-persist.sys.timezone=Asia/Shanghai
+persist.sys.timezone=Europe/Amsterdam
 persist.sys.strictmode.visual=0
 persist.sys.strictmode.disable=1
 
