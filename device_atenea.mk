@@ -64,6 +64,9 @@ PRODUCT_PACKAGES += \
     gsm0710muxd \
     gsm0710muxdmd2
 
+PRODUCT_COPY_FILES += \
+     $(LOCAL_PATH)/configs/spn-conf.xml:system/etc/spn-conf.xml
+
 # GPS
 PRODUCT_COPY_FILES += \
      $(LOCAL_PATH)/configs/agps_profiles_conf2.xml:system/etc/agps_profiles_conf2.xml
@@ -86,7 +89,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/default.prop:root/default.prop \
     $(LOCAL_PATH)/rootdir/init.recovery.mt6572.rc:root/init.recovery.mt6572.rc \
     $(LOCAL_PATH)/rootdir/init.mt6572.rc:root/init.mt6572.rc \
-    $(LOCAL_PATH)/rootdir/init.fuse.rc:root/init.fuse.rc \
+    $(LOCAL_PATH)/rootdir/init.rc:root/init.rc \
     $(LOCAL_PATH)/rootdir/init.modem.rc:root/init.modem.rc \
     $(LOCAL_PATH)/rootdir/ueventd.mt6572.rc:root/ueventd.mt6572.rc \
     $(LOCAL_PATH)/rootdir/init.mt6572.usb.rc:root/init.mt6572.usb.rc \
@@ -102,7 +105,9 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
 	frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
 	frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
-	frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml
+	frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
+        frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
+        frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml
 
 # Healthd
 PRODUCT_PACKAGES += \
@@ -114,17 +119,16 @@ PRODUCT_PROPERTY_OVERRIDES := \
 	ro.mediatek.chip_ver=S01 \
 	ro.mediatek.version.branch=MM1.MP1 \
 	ro.mediatek.version.sdk=2 \
-	ro.telephony.sim.count=2 \
-	ro.allow.mock.location=0 \
-	ro.debuggable=1 \
+	ro.telephony.sim.count=1 \
+	ro.allow.mock.location=1 \
 	persist.sys.usb.config=mtp,adb \
-	persist.service.adb.enable=1 \
-	persist.service.debuggable=1 \
 	persist.mtk.wcn.combo.chipid=-1
 
 # Set default player to AwesomePlayer
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.media.use-awesome=true
+
+$(call inherit-product, build/target/product/full.mk)
 
 PRODUCT_NAME := full_atenea
 PRODUCT_DEVICE := atenea

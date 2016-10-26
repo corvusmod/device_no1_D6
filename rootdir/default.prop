@@ -1,10 +1,6 @@
 #
 # ADDITIONAL_DEFAULT_PROPERTIES
 #
-ro.secure=1
-ro.adb.secure=0
-ro.allow.mock.location=0
-ro.debuggable=0
 ro.zygote=zygote32
 ro.mount.fs=EXT4
 persist.sys.usb.config=mtp,adb
