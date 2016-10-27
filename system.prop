@@ -1,5 +1,5 @@
 #
-# system.prop for atenea
+# system.prop for D6
 #
 ro.sf.lcd_density=170
 wifi.interface=wlan0

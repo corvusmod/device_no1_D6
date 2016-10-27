@@ -20,10 +20,11 @@
 /dev/otp 		  0660	 root	    nvram
 /dev/nvram 		   0660	 root	    system
 /dev/misc		   0660	 root	    system
+/dev/misc2		   0660	 root	    system
+/dev/block/platform/mtk-msdc.0/by-name/misc2		   0660	 root	    system
 /dev/block/mmcblk0	   0660	 root	    system
 /dev/block/mmcblk0boot0	   0660	 root	    system
-
-# change misc-sd to 0660 root system
+/dev/block/mmcblk0boot1	   0660	 root	    system
 /dev/misc-sd              0660   root       system
 
 # add the read write right of ttyUSB*
@@ -58,6 +59,7 @@
 /dev/uhid                 0660   system     net_bt_stack
 /dev/uinput               0660   system     net_bt_stack
 /dev/alarm                0664   system     radio
+/dev/rtc0                 0640   system     system
 /dev/tty0                 0660   root       system
 /dev/graphics/*           0660   root       graphics
 /dev/msm_hw3dm            0660   system     graphics
@@ -121,9 +123,12 @@
 /dev/ppp                  0660   radio      vpn
 
 # sysfs properties
+/sys/devices/platform/trusty.*      trusty_version        0440  root   log
 /sys/devices/virtual/input/input*   enable      0660  root   input
 /sys/devices/virtual/input/input*   poll_delay  0660  root   input
 /sys/devices/virtual/usb_composite/*   enable      0664  root   system
+/sys/devices/system/cpu/cpu*   cpufreq/scaling_max_freq   0664  system system
+/sys/devices/system/cpu/cpu*   cpufreq/scaling_min_freq   0664  system system
 /sys/devices/platform/leds-mt65xx/leds/green   delay_on      0664  system   system
 /sys/devices/platform/leds-mt65xx/leds/green   delay_off      0664  system   system
 /sys/devices/platform/leds-mt65xx/leds/red   delay_on      0664  system   system
@@ -159,3 +164,11 @@
 /dev/touch              0660   root       system
 /dev/hotknot             0660    root system
 
+#hang_detect
+/dev/RT_Monitor         0600   system  system
+/dev/kick_powerkey      0600   system  system
+
+#MTK In-House TEE
+/dev/ttyACM0		  0660   radio	    radio
+
+/dev/qlulpsh      0666   root       root

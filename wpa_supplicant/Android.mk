@@ -1,4 +1,4 @@
-ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),mt6572)
+ifeq ($(TARGET_BOOTLOADER_BOARD_NAME),mt6580)
 
 LOCAL_PATH := $(call my-dir)
 

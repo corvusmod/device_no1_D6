@@ -1,4 +1,4 @@
 #used to add device to CM's lunch
-add_lunch_combo cm_atenea-eng
-add_lunch_combo cm_atenea-userdebug
-add_lunch_combo cm_atenea-user
+add_lunch_combo cm_D6-eng
+add_lunch_combo cm_D6-userdebug
+add_lunch_combo cm_D6-user
