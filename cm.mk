@@ -7,8 +7,8 @@ $(call inherit-product, vendor/cm/config/common_full_phone.mk)
 # Inherit device configuration
 $(call inherit-product, device/no1/D6/device_D6.mk)
 
-TARGET_SCREEN_HEIGHT := 360
-TARGET_SCREEN_WIDTH := 360
+TARGET_SCREEN_HEIGHT := 320
+TARGET_SCREEN_WIDTH := 320
 
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := D6

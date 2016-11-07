@@ -3,18 +3,20 @@
 
 # Board
 TARGET_BOARD_PLATFORM := mt6580
+TARGET_NO_BOOTLOADER := true
+
+# Architecture
+TARGET_ARCH := arm
+TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
-ARCH_ARM_HAVE_VFP := true
 TARGET_CPU_SMP := true
-TARGET_ARCH := arm
+TARGET_CPU_VARIANT := cortex-a7
 ARCH_ARM_HAVE_NEON := true
-TARGET_NO_BOOTLOADER := true
-TARGET_ARCH_VARIANT := armv7-a-neon
-TARGET_ARCH_VARIANT_CPU := cortex-a7
-TARGET_CPU_VARIANT:= cortex-a7
-TARGET_CPU_MEMCPY_OPT_DISABLE := true
-MTK_MT6580 := true
+ARCH_ARM_HAVE_VFP := true
+ARCH_ARM_HAVE_TLS_REGISTER := true
+
+TARGET_LDPRELOAD := libxlog.so
 
 BOARD_HAS_NO_SELECT_BUTTON := true
 
@@ -25,23 +27,12 @@ DONT_DEXPREOPT_PREBUILTS := true
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := mt6580
 
-TARGET_USERIMAGES_USE_EXT4:=true
-
-# Assert
-#TARGET_OTA_ASSERT_DEVICE := HM2014011,wt93807
-
-# MTK HARDWARE
+# MTK Hardware
 BOARD_HAS_MTK_HARDWARE := true
 MTK_HARDWARE := true
 BOARD_USES_LEGACY_MTK_AV_BLOB := true
 COMMON_GLOBAL_CFLAGS += -DMTK_HARDWARE -DADD_LEGACY_ACQUIRE_BUFFER_SYMBOL
 COMMON_GLOBAL_CPPFLAGS += -DMTK_HARDWARE
-
-# RIL
-BOARD_RIL_CLASS := ../../../device/no1/D6/ril/
-
-BOARD_CONNECTIVITY_VENDOR := MediaTek
-BOARD_CONNECTIVITY_MODULE := conn_soc
 
 # Partitions & Image
 BOARD_BOOTIMAGE_PARTITION_SIZE := 10485760
@@ -51,7 +42,10 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE:=836600000
 BOARD_CACHEIMAGE_PARTITION_SIZE := 134217728
 BOARD_CACHEIMAGE_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072
-#TARGET_USERIMAGES_SPARSE_EXT_DISABLED := true
+
+TARGET_USERIMAGES_USE_EXT4:=true
+TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
+
 
 # Flags
 TARGET_GLOBAL_CFLAGS   += -mfpu=neon -mfloat-abi=softfp
@@ -66,15 +60,13 @@ TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32S1,32S1 androidboot.selinux=permissive selinux=0
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_PAGESIZE := 2048
-BOARD_MKBOOTIMG_ARGS := --base 0x80000000 --pagesize 2048 --kernel_offset 0x00008000 --ramdisk_offset 0x04000000 --second_offset 0x80f00000 --tags_offset 0x0e000000 --board v.s.160918
+BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x04000000 --tags_offset 0x0e000000 --board v.s.160918
 TARGET_PREBUILT_KERNEL := device/no1/D6/kernel
-BOARD_CUSTOM_BOOTIMG_MK := device/no1/D6/MTKbootimg.mk
-BOARD_CUSTOM_BOOTIMG := true
 
 # Recovery
 TARGET_RECOVERY_FSTAB := device/no1/D6/rootdir/recovery.fstab
 
-TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun%d/file"
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/class/android_usb/android0/f_mass_storage/lun/file
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
@@ -86,6 +78,9 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/no1/D6/bluetooth
 BOARD_EGL_CFG := device/no1/D6/configs/egl.cfg
 USE_OPENGL_RENDERER := true
 BOARD_EGL_WORKAROUND_BUG_10194508 := true
+
+# Disable memcpy opt (for audio libraries)
+TARGET_CPU_MEMCPY_OPT_DISABLE := true
 
 # Selinux
 #BOARD_SEPOLICY_DIRS := \
@@ -112,16 +107,10 @@ WIFI_DRIVER_FW_PATH_P2P:=P2P
 # GPS
 TARGET_SPECIFIC_HEADER_PATH := device/no1/D6/include
 
-LCM_HEIGHT=360
-LCM_WIDTH=360
-
-USE_LEGACY_MTK_AV_BLOB=true
-
-# Use old sepolicy version
-POLICYVERS := 26
+LCM_HEIGHT=320
+LCM_WIDTH=320
 
 # Hack for build
 $(shell mkdir -p $(OUT)/obj/KERNEL_OBJ/usr)
 
-TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/virtual/android_usb/android0/f_mass_storage/lun%d/file"
-
+TARGET_PROVIDES_INIT_RC := true

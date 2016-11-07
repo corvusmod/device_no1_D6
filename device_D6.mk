@@ -128,13 +128,34 @@ PRODUCT_PROPERTY_OVERRIDES := \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.media.use-awesome=true
 
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.adb.secure=0 \
+    ro.secure=0 \
+    ro.allow.mock.location=1 \
+    ro.debuggable=1 \
+    ro.zygote=zygote64_32 \
+    camera.disable_zsl_mode=1 \
+    ro.mount.fs=EXT4 \
+    persist.service.acm.enable=0 \
+    persist.sys.usb.config=mtp
+
+# Filesystem management tools
+PRODUCT_PACKAGES += \
+    e2fsck \
+    fibmap.f2fs \
+    fsck.f2fs \
+    mkfs.f2fs \
+    make_ext4fs \
+    resize2fs \
+    setup_fs
+
 $(call inherit-product, build/target/product/full.mk)
 
 PRODUCT_NAME := full_D6
 PRODUCT_DEVICE := D6
 
 # Boot animation
-TARGET_SCREEN_HEIGHT := 360
-TARGET_SCREEN_WIDTH := 360
+TARGET_SCREEN_HEIGHT := 320
+TARGET_SCREEN_WIDTH := 320
 
-$(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
+$(call inherit-product-if-exists, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)

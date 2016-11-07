@@ -5,7 +5,7 @@
 #
 
 import /init.environ.rc
-import /init.${ro.hardware}.rc
+import /init.mt6580.rc
 import /init.${ro.zygote}.rc
 import /init.trace.rc
 # Include CM's extra init file
