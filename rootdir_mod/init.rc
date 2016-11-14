@@ -5,25 +5,19 @@
 #
 
 import /init.environ.rc
-#import /init.usb.rc
-import /init.${ro.hardware}.rc
+import /init.usb.rc
+import /init.mt6580.rc
+import /init.usb.configfs.rc
 import /init.${ro.zygote}.rc
 import /init.trace.rc
-#import /init.usb.configfs.rc
 # Include CM's extra init file
 import /init.cm.rc
-
+import /init.performance.rc
+import /init.modem.rc
 
 on early-init
     # Set init and its forked children's oom_adj.
     write /proc/1/oom_score_adj -1000
-
-    # Apply strict SELinux checking of PROT_EXEC on mmap/mprotect calls.
-    write /sys/fs/selinux/checkreqprot 0
-
-    # Set the security context for the init process.
-    # This should occur before anything else (e.g. ueventd) is started.
-    setcon u:r:init:s0
 
     # Set the security context of /adb_keys if present.
     restorecon /adb_keys
@@ -31,7 +25,6 @@ on early-init
     mount debugfs /sys/kernel/debug /sys/kernel/debug mode=755
 
     start ueventd
-
 
 on init
     sysclktz 0
@@ -219,9 +212,6 @@ on init
     # enable armv8_deprecated instruction hooks
     write /proc/sys/abi/swp 1
 
-	# ion device
-	chmod 0666 /dev/ion
-
 # Healthd can trigger a full boot from charger mode by signaling this
 # property when the power button is held.
 on property:sys.boot_from_charger_mode=1
@@ -231,9 +221,6 @@ on property:sys.boot_from_charger_mode=1
 # Load properties from /system/ + /factory after fs mount.
 on load_system_props_action
     load_system_props
-
-on load_all_props_action
-    load_all_props
 
 on load_persist_props_action
     load_persist_props
@@ -254,7 +241,6 @@ on late-init
     # this in another action so that the load will be scheduled after the prior
     # issued fs triggers have completed.
     trigger load_system_props_action
-    trigger load_all_props_action
 
     # Now we can mount /data. File encryption requires keymaster to decrypt
     # /data, which in turn can only be loaded when system properties are present
@@ -577,11 +563,6 @@ on property:sys.sysctl.extra_free_kbytes=*
 on property:sys.sysctl.tcp_def_init_rwnd=*
     write /proc/sys/net/ipv4/tcp_default_init_rwnd ${sys.sysctl.tcp_def_init_rwnd}
 
-on property:security.perf_harden=0
-    write /proc/sys/kernel/perf_event_paranoid 1
-
-on property:security.perf_harden=1
-    write /proc/sys/kernel/perf_event_paranoid 3
 
 ## Daemon processes to be run by init.
 ##
@@ -648,7 +629,9 @@ service servicemanager /system/bin/servicemanager
     onrestart restart surfaceflinger
     onrestart restart drm
 
-service vold /system/bin/vold
+service vold /system/bin/vold \
+        --blkid_context=u:r:blkid:s0 --blkid_untrusted_context=u:r:blkid_untrusted:s0 \
+        --fsck_context=u:r:fsck:s0 --fsck_untrusted_context=u:r:fsck_untrusted:s0
     class core
     socket vold stream 0660 root mount
     socket cryptd stream 0660 root mount
@@ -678,12 +661,12 @@ service surfaceflinger /system/bin/surfaceflinger
 service drm /system/bin/drmserver
     class main
     user drm
-    group drm system inet drmrpc
+    group drm system inet drmrpc sdcard_r
 
 service media /system/bin/mediaserver
     class main
-    user media
-    group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc mediadrm qcom_diag
+    user root
+    group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc mediadrm media sdcard_r system net_bt_stack
     ioprio rt 4
 
 # One shot invocation to deal with encrypted volume.
@@ -703,7 +686,7 @@ service encrypt /system/bin/vdc --wait cryptfs enablecrypto inplace default noui
 service bootanim /system/bin/bootanimation
     class core
     user graphics
-    group graphics audio
+    group graphics media audio
     disabled
     oneshot
     writepid /dev/cpuset/system-background/tasks
@@ -783,7 +766,7 @@ on property:persist.logd.logpersistd=logcatd
     exec - logd log -- /system/bin/logcat -L -b all -v threadtime -v usec -v printable -D -f /data/misc/logd/logcat -r 1024 -n 256
     start logcatd
 
-service logcatd /system/bin/logcat -b all -v threadtime -v usec -v printable -D -f /data/misc/logd/logcat -r 1024 -n 256
+service logcatd /system/bin/logcat -b all -v threadtime -v usec -v printable -D -f /data/misc/logd/logcat -r 64 -n 256
     class late_start
     disabled
     # logd for write to /data/misc/logd, log group for read from log daemon

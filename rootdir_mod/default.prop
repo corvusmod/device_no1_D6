@@ -1,0 +1,17 @@
+#
+# ADDITIONAL_DEFAULT_PROPERTIES
+#
+ro.zygote=zygote32
+ro.config.low_ram=true
+ro.hwui.path_cache_size=0
+ro.hwui.text_small_cache_width=512
+ro.hwui.text_small_cache_height=256
+ro.hwui.disable_asset_atlas=true
+ro.mount.fs=EXT4
+camera.disable_zsl_mode=1
+persist.sys.usb.config=mtp,adb
+dalvik.vm.dex2oat-Xms=64m
+dalvik.vm.dex2oat-Xmx=512m
+dalvik.vm.image-dex2oat-Xms=64m
+dalvik.vm.image-dex2oat-Xmx=64m
+ro.dalvik.vm.native.bridge=0
